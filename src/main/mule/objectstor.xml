@@ -12,6 +12,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<http:listener doc:name="Listener" doc:id="90e3849f-7b7d-4a91-b58b-17c5b7c265f3" path="/st" config-ref="HTTP_Listener_config"/>
 		<os:store doc:name="Store" doc:id="10b1a252-a1ba-4a56-b1b6-591cfae76d28" key="Msg"/>
 		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="06686ef1-592f-46a4-9e04-c6279e701815" />
+		<logger level="INFO" doc:name="Logger" doc:id="b8234c69-e746-44a6-94da-77be095186ec" message="#[payload]"/>
 	</flow>
 	<flow name="RetriveobjectstorFlow" doc:id="de721d10-2353-4b2d-9906-cfcbc2b87069" >
 		<http:listener doc:name="Copy_of_Listener" doc:id="1b445eac-8b26-4c54-919e-8cbb58f60a43" config-ref="HTTP_Listener_config" path="/rt" />
