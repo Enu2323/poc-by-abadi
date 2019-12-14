@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="896d9ad3-dcff-4fd2-a27f-7ce5636e9485" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="objectstorFlow" doc:id="871dbb53-b4a7-4107-8e29-a745ee5b14a4" >
+		<http:listener doc:name="Listener" doc:id="90e3849f-7b7d-4a91-b58b-17c5b7c265f3" path="/st" config-ref="HTTP_Listener_config"/>
+		<os:store doc:name="Store" doc:id="10b1a252-a1ba-4a56-b1b6-591cfae76d28" key="Msg"/>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="06686ef1-592f-46a4-9e04-c6279e701815" />
+	</flow>
+	<flow name="RetriveobjectstorFlow" doc:id="de721d10-2353-4b2d-9906-cfcbc2b87069" >
+		<http:listener doc:name="Copy_of_Listener" doc:id="1b445eac-8b26-4c54-919e-8cbb58f60a43" config-ref="HTTP_Listener_config" path="/rt" />
+		<os:retrieve doc:name="Retrieve" doc:id="ea8a4a99-abec-44ef-8a87-2eac99e00def" key="Msg">
+			<os:default-value ><![CDATA[#["retrive from object store"]]]></os:default-value>
+		</os:retrieve>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="2084e0aa-5d7a-4983-95d1-7272149a9cc9" />
+	</flow>
+	<flow name="RemoveobjectstorFlow" doc:id="f897bde8-3fc8-415e-97d6-c27e013a4043" >
+		<http:listener doc:name="Copy_of_Copy_of_Listener" doc:id="35657719-c67b-45fb-aa07-a5f078caafe9" config-ref="HTTP_Listener_config" path="/rm" />
+		<os:remove doc:name="Remove" doc:id="2079d3eb-e6b5-4009-a2b2-7661d3fc0b8e" key="Msg"/>
+		<set-payload value="#['remove from object store']" doc:name="Payload" doc:id="3b168dec-10ba-4877-9099-26503f782c08" />
+	</flow>
+</mule>
